@@ -30,3 +30,11 @@ def load_tasks():
             task_list = cursor.fetchall()
         return task_list
 
+
+def view_tasks():
+    tasks = load_tasks()
+    if len(tasks) == 0:
+        print("Список задач пуст.")
+    else:
+        for task in tasks:
+            print(f"{task[0]}. {task[1]} — [{task[2]}]")
