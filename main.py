@@ -38,3 +38,17 @@ def view_tasks():
     else:
         for task in tasks:
             print(f"{task[0]}. {task[1]} — [{task[2]}]")
+
+
+def add_task():
+    title = input("Введите название задачи: ")
+    priority = input("Введите приоритет (Низкий/Средний/Высокий): ")
+
+    with psycopg2.connect(**CONNECT_DB) as conn:
+        with conn.cursor() as cursor:
+            try:
+                cursor.execute('INSERT INTO tasks (title, priority) VALUES (%s, %s)', (title, priority))
+                conn.commit()
+                print("Задача добавлена.")
+            except Exception as e:
+                print(f"Ошибка добавления: {e}")
