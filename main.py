@@ -1,3 +1,5 @@
+from asyncio import tasks
+
 import psycopg2
 
 CONNECT_DB = {
@@ -52,3 +54,25 @@ def add_task():
                 print("Задача добавлена.")
             except Exception as e:
                 print(f"Ошибка добавления: {e}")
+
+
+def delete_task():
+    view_tasks()
+    try:
+        task_id = int(input("Введите ID задачи для удаления: "))
+        try:
+            with psycopg2.connect(**CONNECT_DB) as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute('DELETE FROM tasks WHERE id = %s', (task_id,))
+
+                    if cursor.rowcount > 0:
+                        print("Задача удалена")
+                    else:
+                        print("Задача с таким ID не найдена")
+                    conn.commit()
+                    cursor.close()
+        except Exception as e:
+            print(f"Ошибка удаления: {e}")
+
+    except ValueError:
+        print("Введено некорректное значение")
