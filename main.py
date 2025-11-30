@@ -11,7 +11,6 @@ CONNECT_DB = {
 def init_database():
     with psycopg2.connect(**CONNECT_DB) as conn:
         with conn.cursor() as cursor:
-            cursor = conn.cursor()
             cursor.execute('''
             CREATE TABLE IF NOT EXISTS tasks (
                 id SERIAL PRIMARY KEY,
