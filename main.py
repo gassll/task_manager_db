@@ -1,5 +1,3 @@
-from asyncio import tasks
-
 import psycopg2
 
 CONNECT_DB = {
@@ -73,6 +71,33 @@ def delete_task():
                     cursor.close()
         except Exception as e:
             print(f"Ошибка удаления: {e}")
+
+    except ValueError:
+        print("Введено некорректное значение")
+
+
+def update_task():
+    view_tasks()
+
+    title = input("Введите название задачи: ")
+    priority = input("Введите приоритет (Низкий/Средний/Высокий): ")
+
+    try:
+        task_id = int(input("Введите ID задачи для обновления: "))
+        try:
+            with psycopg2.connect(**CONNECT_DB) as conn:
+                with conn.cursor() as cursor:
+                    cursor.execute('UPDATE tasks SET title = %s, priority = %s WHERE id = %s',
+                                   (title, priority, task_id,))
+
+                    if cursor.rowcount > 0:
+                        print("Задача обновлена")
+                    else:
+                        print("Задача с таким ID не найдена")
+                    conn.commit()
+                    cursor.close()
+        except Exception as e:
+            print(f"Ошибка обновления: {e}")
 
     except ValueError:
         print("Введено некорректное значение")
