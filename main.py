@@ -101,3 +101,36 @@ def update_task():
 
     except ValueError:
         print("Введено некорректное значение")
+
+
+def main():
+    print("Добро пожаловать в менеджер задач с БД!")
+    init_database()
+
+    while True:
+        print("\nМеню:")
+        print("1 — Просмотреть задачи")
+        print("2 — Добавить задачу")
+        print("3 — Удалить задачу")
+        print("4 — Обновить задачу")
+        print("0 — Выход")
+
+        choice = input("Выберите пункт меню: ")
+
+        if choice == "1":
+            view_tasks()
+        elif choice == "2":
+            add_task()
+        elif choice == "3":
+            delete_task()
+        elif choice == "4":
+            update_task()
+        elif choice == "0":
+            print("Выход из программы.")
+            break
+        else:
+            print("Ошибка: такого пункта меню нет. Попробуйте снова.")
+
+
+if __name__ == "__main__":
+    main()
